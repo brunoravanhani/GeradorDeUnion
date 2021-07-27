@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.105
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeradorUnion", "GeradorUnion\GeradorUnion.csproj", "{4C6D23C4-80BA-42E4-9544-C723CC78E21C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeradorUnion.Test", "GeradorUnion.Test\GeradorUnion.Test.csproj", "{EA869E5D-5A6D-46A0-96C8-EDEAE77EBF5B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4C6D23C4-80BA-42E4-9544-C723CC78E21C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C6D23C4-80BA-42E4-9544-C723CC78E21C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C6D23C4-80BA-42E4-9544-C723CC78E21C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C6D23C4-80BA-42E4-9544-C723CC78E21C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA869E5D-5A6D-46A0-96C8-EDEAE77EBF5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA869E5D-5A6D-46A0-96C8-EDEAE77EBF5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA869E5D-5A6D-46A0-96C8-EDEAE77EBF5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA869E5D-5A6D-46A0-96C8-EDEAE77EBF5B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
