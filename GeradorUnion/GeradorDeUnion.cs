@@ -5,18 +5,19 @@ using System.Text;
 
 namespace GeradorUnion
 {
-    public class GeradorDeUnion
+    public class GeradorDeUnion<T>
     {
 
-        public string Gerar(string[] caracteristicas)
+        public string Gerar(IEnumerable<T> filtros)
         {
+            var filtrosList = filtros.ToList();
+            var count = filtrosList.Count;
             var sb = new StringBuilder();
-            var count = caracteristicas.Length;
             for (var i = 0; i < count; i++)
             {
-                sb.Append("Select * from Tabela where caracteristica = '");
-                sb.Append(caracteristicas[i]);
-                sb.Append('\'');
+                sb.Append("SELECT * FROM Tabela");
+                
+                sb.Append(GetWhereClause(filtrosList[i]));
 
                 if (i < count - 1)
                 {
@@ -24,6 +25,55 @@ namespace GeradorUnion
 
                 }
             }
+            return sb.ToString();
+        }
+
+        public string GetWhereClause(T filter)
+        {
+            if (filter == null)
+            {
+                return string.Empty;
+            }
+
+            var props = typeof(T).GetProperties();
+
+            if (props.Length == 0)
+            {
+                return string.Empty;
+            }
+
+            var sb = new StringBuilder();
+
+            sb.Append(" WHERE ");
+
+            for (var i = 0; i < props.Length; i++)
+            {
+                var prop = props[i];
+
+                if (prop.GetValue(filter) == null)
+                {
+                    continue;
+                }
+
+                if (i != 0)
+                {
+                    sb.Append(" AND ");
+                }
+
+                sb.Append(prop.Name);
+                sb.Append(" = ");
+                
+                if (prop.PropertyType.IsEquivalentTo(typeof(string)))
+                {
+                    sb.Append('\'');
+                    sb.Append(prop.GetValue(filter));
+                    sb.Append('\'');
+                } else
+                {
+                    sb.Append(prop.GetValue(filter));
+                }
+            }
+
             return sb.ToString();
         }
     }

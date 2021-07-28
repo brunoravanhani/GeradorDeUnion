@@ -1,4 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace GeradorUnion.Test
 {
@@ -6,24 +8,70 @@ namespace GeradorUnion.Test
     public class GeradorDeUnionTest
     {
         [TestMethod]
-        public void ShouldValidateGerador()
+        [DataRow(3, "select")]
+        [DataRow(2, "union")]
+        [DataRow(3, "Tabela")]
+        public void ShouldValidateGerador(int numberOcurrences, string word)
         {
-            var caracteristicas = new string[]
+            var pessoas = new List<Pessoa>
             {
-                "teste",
-                "teste2",
-                "teste3"
+                new Pessoa { Nome = "Teste1", Idade = 18 },
+                new Pessoa { Nome = "Teste1", Idade = 18 },
+                new Pessoa { Nome = "Teste1", Idade = 18 }
             };
 
-            var gerador = new GeradorDeUnion();
+            var gerador = new GeradorDeUnion<Pessoa>();
 
-            var result = gerador.Gerar(caracteristicas);
+            var result = gerador.Gerar(pessoas);
 
-            var expected = @"Select * from Tabela where caracteristica = 'teste' UNION Select * from Tabela where caracteristica = 'teste2' UNION Select * from Tabela where caracteristica = 'teste3'";
+            var regex = new Regex(word, RegexOptions.IgnoreCase);
 
-            Assert.AreEqual(
-                expected
-                , result);
+            Assert.AreEqual(numberOcurrences, regex.Matches(result).Count);
+        }
+
+
+        [TestMethod("Should validate GetWhereClause with all properties")]
+        public void ShouldValidadeWhereAllProperties()
+        {
+            var gerador = new GeradorDeUnion<Pessoa>();
+
+            var pessoa = new Pessoa { Nome = "Teste", Idade = 17, Sobrenome = "Da Silva" };
+
+            var result = gerador.GetWhereClause(pessoa);
+
+            Assert.AreEqual(" WHERE Nome = 'Teste' AND Sobrenome = 'Da Silva' AND Idade = 17", result);
+        }
+
+        [TestMethod("Should validate GetWhereClause with null object")]
+        public void ShouldValidadeWhereNull()
+        {
+            var gerador = new GeradorDeUnion<Pessoa>();
+
+            var pessoa = new Pessoa { Nome = "Teste", Idade = 17, Sobrenome = "Da Silva" };
+
+            var result = gerador.GetWhereClause(null);
+
+            Assert.AreEqual("", result);
+        }
+
+        [TestMethod("Should validate GetWhereClause with property null")]
+        public void ShouldValidadeWherePropertyNull()
+        {
+            var gerador = new GeradorDeUnion<Pessoa>();
+
+            var pessoa = new Pessoa { Nome = "Teste", Idade = 17 };
+
+            var result = gerador.GetWhereClause(pessoa);
+
+            Assert.AreEqual(" WHERE Nome = 'Teste' AND Idade = 17", result);
+        }
+
+
+        class Pessoa
+        {
+            public string Nome { get; set; }
+            public string Sobrenome { get; set; }
+            public int Idade { get; set; }
         }
     }
 }
