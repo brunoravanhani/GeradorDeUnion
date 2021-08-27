@@ -7,17 +7,22 @@ namespace GeradorUnion
 {
     public class GeradorDeUnion<T>
     {
+        private readonly IList<T> Filtros;
 
-        public string Gerar(IEnumerable<T> filtros)
+        public GeradorDeUnion(IList<T> filtros)
         {
-            var filtrosList = filtros.ToList();
-            var count = filtrosList.Count;
+            Filtros = filtros;
+        }
+
+        public string Gerar()
+        {
+            var count = Filtros.Count;
             var sb = new StringBuilder();
             for (var i = 0; i < count; i++)
             {
                 sb.Append("SELECT * FROM Tabela");
                 
-                sb.Append(GetWhereClause(filtrosList[i]));
+                sb.Append(GetWhereClause(Filtros[i]));
 
                 if (i < count - 1)
                 {
