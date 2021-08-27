@@ -8,29 +8,41 @@ namespace GeradorUnion
     public class GeradorDeUnion<T>
     {
         private readonly IList<T> Filtros;
+        private StringBuilder stringBuilder;
 
         public GeradorDeUnion(IList<T> filtros)
         {
             Filtros = filtros;
+            stringBuilder = new StringBuilder();
         }
 
         public string Gerar()
         {
-            var count = Filtros.Count;
-            var sb = new StringBuilder();
-            for (var i = 0; i < count; i++)
+            stringBuilder.Clear();
+            
+            for (var i = 0; i < Filtros.Count; i++)
             {
-                sb.Append("SELECT * FROM Tabela");
-                
-                sb.Append(GetWhereClause(Filtros[i]));
-
-                if (i < count - 1)
-                {
-                    sb.Append(" UNION ");
-
-                }
+                PopularStringBuilderComScripts(i);
             }
-            return sb.ToString();
+            return stringBuilder.ToString();
+        }
+
+        private void PopularStringBuilderComScripts(int i)
+        {
+            stringBuilder.Append("SELECT * FROM Tabela");
+
+            stringBuilder.Append(GetWhereClause(Filtros[i]));
+
+            if (IsUltimaPosicao(i))
+            {
+                stringBuilder.Append(" UNION ");
+            }
+            
+        }
+
+        private bool IsUltimaPosicao(int i)
+        {
+            return i < Filtros.Count - 1;
         }
 
         public string GetWhereClause(T filter)
