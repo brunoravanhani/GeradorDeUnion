@@ -20,9 +20,9 @@ namespace GeradorUnion.Test
                 new Pessoa { Nome = "Teste1", Idade = 18 }
             };
 
-            var gerador = new GeradorDeUnion<Pessoa>();
+            var gerador = new GeradorDeUnion<Pessoa>(pessoas);
 
-            var result = gerador.Gerar(pessoas);
+            var result = gerador.Gerar();
 
             var regex = new Regex(word, RegexOptions.IgnoreCase);
 
@@ -33,9 +33,12 @@ namespace GeradorUnion.Test
         [TestMethod("Should validate GetWhereClause with all properties")]
         public void ShouldValidadeWhereAllProperties()
         {
-            var gerador = new GeradorDeUnion<Pessoa>();
-
+            
             var pessoa = new Pessoa { Nome = "Teste", Idade = 17, Sobrenome = "Da Silva" };
+            
+            
+            var gerador = new GeradorDeUnion<Pessoa>(new List<Pessoa> { pessoa });
+
 
             var result = gerador.GetWhereClause(pessoa);
 
@@ -45,9 +48,9 @@ namespace GeradorUnion.Test
         [TestMethod("Should validate GetWhereClause with null object")]
         public void ShouldValidadeWhereNull()
         {
-            var gerador = new GeradorDeUnion<Pessoa>();
-
             var pessoa = new Pessoa { Nome = "Teste", Idade = 17, Sobrenome = "Da Silva" };
+
+            var gerador = new GeradorDeUnion<Pessoa>(new List<Pessoa> { pessoa });
 
             var result = gerador.GetWhereClause(null);
 
@@ -57,9 +60,10 @@ namespace GeradorUnion.Test
         [TestMethod("Should validate GetWhereClause with property null")]
         public void ShouldValidadeWherePropertyNull()
         {
-            var gerador = new GeradorDeUnion<Pessoa>();
 
             var pessoa = new Pessoa { Nome = "Teste", Idade = 17 };
+
+            var gerador = new GeradorDeUnion<Pessoa>(new List<Pessoa> { pessoa });
 
             var result = gerador.GetWhereClause(pessoa);
 
