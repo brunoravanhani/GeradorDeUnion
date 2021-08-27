@@ -1,3 +1,4 @@
+using GeradorUnion.Test.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
@@ -30,52 +31,6 @@ namespace GeradorUnion.Test
         }
 
 
-        [TestMethod("Should validate GetWhereClause with all properties")]
-        public void ShouldValidadeWhereAllProperties()
-        {
-            
-            var pessoa = new Pessoa { Nome = "Teste", Idade = 17, Sobrenome = "Da Silva" };
-            
-            
-            var gerador = new GeradorDeUnion<Pessoa>(new List<Pessoa> { pessoa });
-
-
-            var result = gerador.GetWhereClause(pessoa);
-
-            Assert.AreEqual(" WHERE Nome = 'Teste' AND Sobrenome = 'Da Silva' AND Idade = 17", result);
-        }
-
-        [TestMethod("Should validate GetWhereClause with null object")]
-        public void ShouldValidadeWhereNull()
-        {
-            var pessoa = new Pessoa { Nome = "Teste", Idade = 17, Sobrenome = "Da Silva" };
-
-            var gerador = new GeradorDeUnion<Pessoa>(new List<Pessoa> { pessoa });
-
-            var result = gerador.GetWhereClause(null);
-
-            Assert.AreEqual("", result);
-        }
-
-        [TestMethod("Should validate GetWhereClause with property null")]
-        public void ShouldValidadeWherePropertyNull()
-        {
-
-            var pessoa = new Pessoa { Nome = "Teste", Idade = 17 };
-
-            var gerador = new GeradorDeUnion<Pessoa>(new List<Pessoa> { pessoa });
-
-            var result = gerador.GetWhereClause(pessoa);
-
-            Assert.AreEqual(" WHERE Nome = 'Teste' AND Idade = 17", result);
-        }
-
-
-        class Pessoa
-        {
-            public string Nome { get; set; }
-            public string Sobrenome { get; set; }
-            public int Idade { get; set; }
-        }
+        
     }
 }
