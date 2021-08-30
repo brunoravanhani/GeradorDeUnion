@@ -42,5 +42,18 @@ namespace GeradorUnion.Test
 
             Assert.AreEqual(" WHERE Nome = 'Teste' AND Idade = 17", result);
         }
+
+        [TestMethod("Should validate GetWhereClause with empty object")]
+        public void ShouldValidadeWhereEmpty()
+        {
+
+            var pessoa = new Pessoa();
+
+            var gerador = new GeradorDeWhereClause<Pessoa>(pessoa);
+
+            var result = gerador.GetWhereClause();
+
+            Assert.AreEqual("", result);
+        }
     }
 }
