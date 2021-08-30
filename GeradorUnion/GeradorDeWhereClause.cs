@@ -1,4 +1,5 @@
 ﻿
+using System.Linq;
 using System.Reflection;
 using System.Text;
 
@@ -26,7 +27,8 @@ namespace GeradorUnion
 
             var props = typeof(T).GetProperties();
 
-            if (props.Length == 0)
+
+            if (IsEmptyObject(props))
             {
                 return string.Empty;
             }
@@ -88,6 +90,16 @@ namespace GeradorUnion
         private static bool IsPropString(PropertyInfo prop)
         {
             return prop.PropertyType.IsEquivalentTo(typeof(string));
+        }
+    
+        private bool IsEmptyObject(PropertyInfo[] props)
+        {
+            if (props.Length == 0)
+            {
+                return true;
+            }
+
+            return props.All(prop => prop?.GetValue(ModeloParaWhere) == null);
         }
     }
 }
