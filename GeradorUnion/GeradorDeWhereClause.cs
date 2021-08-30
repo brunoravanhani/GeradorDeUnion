@@ -1,4 +1,5 @@
 ﻿
+using System.Reflection;
 using System.Text;
 
 namespace GeradorUnion
@@ -32,36 +33,61 @@ namespace GeradorUnion
 
             _stringBuilder.Append(" WHERE ");
 
-            for (var i = 0; i < props.Length; i++)
+            AdicionarPropriedadeNaString(props[0]);
+
+            for (var i = 1; i < props.Length; i++)
             {
-                var prop = props[i];
-
-                if (prop.GetValue(ModeloParaWhere) == null)
-                {
-                    continue;
-                }
-
-                if (i != 0)
-                {
-                    _stringBuilder.Append(" AND ");
-                }
-
-                _stringBuilder.Append(prop.Name);
-                _stringBuilder.Append(" = ");
-
-                if (prop.PropertyType.IsEquivalentTo(typeof(string)))
-                {
-                    _stringBuilder.Append('\'');
-                    _stringBuilder.Append(prop.GetValue(ModeloParaWhere));
-                    _stringBuilder.Append('\'');
-                }
-                else
-                {
-                    _stringBuilder.Append(prop.GetValue(ModeloParaWhere));
-                }
+                AdicionarAndNaString(props[i]);
+                AdicionarPropriedadeNaString(props[i]);
             }
 
             return _stringBuilder.ToString();
+        }
+
+        private void AdicionarPropriedadeNaString(PropertyInfo? prop)
+        {
+            if (prop?.GetValue(ModeloParaWhere) == null)
+            {
+                return;
+            }
+
+            AdicionarColunaNaString(prop);
+            AdicionarValorNaString(prop);
+        }
+
+        private void AdicionarValorNaString(PropertyInfo prop)
+        {
+            if (IsPropString(prop))
+            {
+                _stringBuilder.Append('\'');
+                _stringBuilder.Append(prop.GetValue(ModeloParaWhere));
+                _stringBuilder.Append('\'');
+            }
+            else
+            {
+                _stringBuilder.Append(prop.GetValue(ModeloParaWhere));
+            }
+        }
+
+        private void AdicionarColunaNaString(PropertyInfo prop)
+        {
+            _stringBuilder.Append(prop.Name);
+            _stringBuilder.Append(" = ");
+        }
+
+        private void AdicionarAndNaString(PropertyInfo prop)
+        {
+            if (prop?.GetValue(ModeloParaWhere) == null)
+            {
+                return;
+            }
+
+            _stringBuilder.Append(" AND ");
+        }
+
+        private static bool IsPropString(PropertyInfo prop)
+        {
+            return prop.PropertyType.IsEquivalentTo(typeof(string));
         }
     }
 }
