@@ -20,30 +20,36 @@ namespace GeradorUnion
 
             _stringBuilder.Clear();
 
-            if (ModeloParaWhere == null)
+            var props = GetPropertyInfos();
+
+            if (IsValidProps(props))
             {
                 return string.Empty;
+            }
+
+            PopularStringBuilder(props);
+
+            return _stringBuilder.ToString();
+        }
+
+        
+
+        private PropertyInfo[]? GetPropertyInfos()
+        {
+            if (ModeloParaWhere == null)
+            {
+                return null;
             }
 
             var props = typeof(T).GetProperties();
 
 
-            if (IsEmptyObject(props))
+            if (IsValidProps(props))
             {
-                return string.Empty;
+                return null;
             }
 
-            _stringBuilder.Append(" WHERE ");
-
-            AdicionarPropriedadeNaString(props[0]);
-
-            for (var i = 1; i < props.Length; i++)
-            {
-                AdicionarAndNaString(props[i]);
-                AdicionarPropriedadeNaString(props[i]);
-            }
-
-            return _stringBuilder.ToString();
+            return props;
         }
 
         private void AdicionarPropriedadeNaString(PropertyInfo? prop)
@@ -92,14 +98,27 @@ namespace GeradorUnion
             return prop.PropertyType.IsEquivalentTo(typeof(string));
         }
     
-        private bool IsEmptyObject(PropertyInfo[] props)
+        private bool IsValidProps(PropertyInfo[]? props)
         {
-            if (props.Length == 0)
+            if (props == null || props.Length == 0)
             {
                 return true;
             }
 
             return props.All(prop => prop?.GetValue(ModeloParaWhere) == null);
+        }
+        
+        private void PopularStringBuilder(PropertyInfo[]? props)
+        {
+            _stringBuilder.Append(" WHERE ");
+
+            AdicionarPropriedadeNaString(props[0]);
+
+            for (var i = 1; i < props.Length; i++)
+            {
+                AdicionarAndNaString(props[i]);
+                AdicionarPropriedadeNaString(props[i]);
+            }
         }
     }
 }
