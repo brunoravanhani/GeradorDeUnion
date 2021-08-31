@@ -43,12 +43,6 @@ namespace GeradorUnion
 
             var props = typeof(T).GetProperties();
 
-
-            if (IsValidProps(props))
-            {
-                return null;
-            }
-
             return props;
         }
 
