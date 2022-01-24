@@ -7,11 +7,11 @@ namespace GeradorUnion
 {
     public class GeradorDeWhereClause<T>
     {
-        private readonly T ModeloParaWhere;
-        private StringBuilder _stringBuilder;
-        public GeradorDeWhereClause(T modeloParaWhere)
+        private readonly T _modelForWhere;
+        private readonly StringBuilder _stringBuilder;
+        public GeradorDeWhereClause(T modelForWhere)
         {
-            ModeloParaWhere = modeloParaWhere;
+            _modelForWhere = modelForWhere;
             _stringBuilder = new StringBuilder();
         }
 
@@ -27,7 +27,7 @@ namespace GeradorUnion
                 return string.Empty;
             }
 
-            PopularStringBuilder(props);
+            PopulateStringBuilder(props);
 
             return _stringBuilder.ToString();
         }
@@ -36,7 +36,7 @@ namespace GeradorUnion
 
         private PropertyInfo[]? GetPropertyInfos()
         {
-            if (ModeloParaWhere == null)
+            if (_modelForWhere == null)
             {
                 return null;
             }
@@ -46,40 +46,40 @@ namespace GeradorUnion
             return props;
         }
 
-        private void AdicionarPropriedadeNaString(PropertyInfo? prop)
+        private void AddPropInString(PropertyInfo? prop)
         {
-            if (prop?.GetValue(ModeloParaWhere) == null)
+            if (prop?.GetValue(_modelForWhere) == null)
             {
                 return;
             }
 
-            AdicionarColunaNaString(prop);
-            AdicionarValorNaString(prop);
+            AddColumnInString(prop);
+            AddValueInString(prop);
         }
 
-        private void AdicionarValorNaString(PropertyInfo prop)
+        private void AddValueInString(PropertyInfo prop)
         {
             if (IsPropString(prop))
             {
                 _stringBuilder.Append('\'');
-                _stringBuilder.Append(prop.GetValue(ModeloParaWhere));
+                _stringBuilder.Append(prop.GetValue(_modelForWhere));
                 _stringBuilder.Append('\'');
             }
             else
             {
-                _stringBuilder.Append(prop.GetValue(ModeloParaWhere));
+                _stringBuilder.Append(prop.GetValue(_modelForWhere));
             }
         }
 
-        private void AdicionarColunaNaString(PropertyInfo prop)
+        private void AddColumnInString(PropertyInfo prop)
         {
             _stringBuilder.Append(prop.Name);
             _stringBuilder.Append(" = ");
         }
 
-        private void AdicionarAndNaString(PropertyInfo prop)
+        private void AddAndKeyword(PropertyInfo prop)
         {
-            if (prop?.GetValue(ModeloParaWhere) == null)
+            if (prop?.GetValue(_modelForWhere) == null)
             {
                 return;
             }
@@ -99,19 +99,19 @@ namespace GeradorUnion
                 return true;
             }
 
-            return props.All(prop => prop?.GetValue(ModeloParaWhere) == null);
+            return props.All(prop => prop?.GetValue(_modelForWhere) == null);
         }
         
-        private void PopularStringBuilder(PropertyInfo[]? props)
+        private void PopulateStringBuilder(PropertyInfo[]? props)
         {
             _stringBuilder.Append(" WHERE ");
 
-            AdicionarPropriedadeNaString(props[0]);
+            AddPropInString(props[0]);
 
             for (var i = 1; i < props.Length; i++)
             {
-                AdicionarAndNaString(props[i]);
-                AdicionarPropriedadeNaString(props[i]);
+                AddAndKeyword(props[i]);
+                AddPropInString(props[i]);
             }
         }
     }

@@ -1,50 +1,49 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace GeradorUnion
 {
     public class GeradorDeUnion<T>
     {
-        private readonly IList<T> Filtros;
-        private StringBuilder stringBuilder;
+        private readonly IList<T> _filters;
+        private readonly StringBuilder _stringBuilder;
 
-        public GeradorDeUnion(IList<T> filtros)
+        public GeradorDeUnion(IList<T> filters)
         {
-            Filtros = filtros;
-            stringBuilder = new StringBuilder();
+            _filters = filters;
+            _stringBuilder = new StringBuilder();
         }
 
         public string Gerar()
         {
-            stringBuilder.Clear();
+            _stringBuilder.Clear();
             
-            for (var i = 0; i < Filtros.Count; i++)
+            for (var i = 0; i < _filters.Count; i++)
             {
-                PopularStringBuilderComScripts(i);
+                PopulateStringBuilder(i);
             }
-            return stringBuilder.ToString();
+            return _stringBuilder.ToString();
         }
 
-        private void PopularStringBuilderComScripts(int i)
+        private void PopulateStringBuilder(int i)
         {
-            var geradorDeWhere = new GeradorDeWhereClause<T>(Filtros[i]);
+            var geradorDeWhere = new GeradorDeWhereClause<T>(_filters[i]);
 
-            stringBuilder.Append("SELECT * FROM Tabela");
+            _stringBuilder.Append("SELECT * FROM Table");
 
-            stringBuilder.Append(geradorDeWhere.GetWhereClause());
+            _stringBuilder.Append(geradorDeWhere.GetWhereClause());
 
-            if (IsUltimaPosicao(i))
+            if (IsLastPosition(i))
             {
-                stringBuilder.Append(" UNION ");
+                _stringBuilder.Append(" UNION ");
             }
             
         }
 
-        private bool IsUltimaPosicao(int i)
+        private bool IsLastPosition(int i)
         {
-            return i < Filtros.Count - 1;
+            return i < _filters.Count - 1;
         }
         
     }
