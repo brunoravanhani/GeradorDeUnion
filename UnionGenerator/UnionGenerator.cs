@@ -28,11 +28,11 @@ namespace GeradorUnion
 
         private void PopulateStringBuilder(int i)
         {
-            var geradorDeWhere = new WhereClauseGenerator<T>(_filters[i]);
+            var whereGenerator = new WhereClauseGenerator<T>(_filters[i]);
 
             _stringBuilder.Append("SELECT * FROM Table");
 
-            _stringBuilder.Append(geradorDeWhere.GetWhereClause());
+            _stringBuilder.Append(whereGenerator.GetWhereClause());
 
             if (IsLastPosition(i))
             {

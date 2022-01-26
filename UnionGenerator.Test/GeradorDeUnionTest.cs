@@ -14,16 +14,16 @@ namespace GeradorUnion.Test
         [DataRow(3, "Table")]
         public void ShouldValidateGerador(int numberOcurrences, string word)
         {
-            var pessoas = new List<Pessoa>
+            var people = new List<Person>
             {
-                new Pessoa { Nome = "Teste1", Idade = 18 },
-                new Pessoa { Nome = "Teste1", Idade = 18 },
-                new Pessoa { Nome = "Teste1", Idade = 18 }
+                new Person { FirstName = "Teste1", Age = 18 },
+                new Person { FirstName = "Teste1", Age = 18 },
+                new Person { FirstName = "Teste1", Age = 18 }
             };
 
-            var gerador = new UnionGenerator<Pessoa>(pessoas);
+            var generator = new UnionGenerator<Person>(people);
 
-            var result = gerador.Generate();
+            var result = generator.Generate();
 
             var regex = new Regex(word, RegexOptions.IgnoreCase);
 

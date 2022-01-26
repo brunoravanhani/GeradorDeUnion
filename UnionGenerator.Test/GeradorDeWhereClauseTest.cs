@@ -10,22 +10,22 @@ namespace GeradorUnion.Test
         public void ShouldValidadeWhereAllProperties()
         {
 
-            var pessoa = new Pessoa { Nome = "Teste", Idade = 17, Sobrenome = "Da Silva" };
+            var person = new Person { FirstName = "Teste", Age = 17, LastName = "Da Silva" };
 
-            var gerador = new WhereClauseGenerator<Pessoa>(pessoa);
+            var generator = new WhereClauseGenerator<Person>(person);
 
-            var result = gerador.GetWhereClause();
+            var result = generator.GetWhereClause();
 
-            Assert.AreEqual(" WHERE Nome = 'Teste' AND Sobrenome = 'Da Silva' AND Idade = 17", result);
+            Assert.AreEqual(" WHERE FirstName = 'Teste' AND LastName = 'Da Silva' AND Age = 17", result);
         }
 
         [TestMethod("Should validate GetWhereClause with null object")]
         public void ShouldValidadeWhereNull()
         {
 
-            var gerador = new WhereClauseGenerator<Pessoa>(null);
+            var generator = new WhereClauseGenerator<Person>(null);
 
-            var result = gerador.GetWhereClause();
+            var result = generator.GetWhereClause();
 
             Assert.AreEqual("", result);
         }
@@ -34,24 +34,24 @@ namespace GeradorUnion.Test
         public void ShouldValidadeWherePropertyNull()
         {
 
-            var pessoa = new Pessoa { Nome = "Teste", Idade = 17 };
+            var person = new Person { FirstName = "Teste", Age = 17 };
 
-            var gerador = new WhereClauseGenerator<Pessoa>(pessoa);
+            var generator = new WhereClauseGenerator<Person>(person);
 
-            var result = gerador.GetWhereClause();
+            var result = generator.GetWhereClause();
 
-            Assert.AreEqual(" WHERE Nome = 'Teste' AND Idade = 17", result);
+            Assert.AreEqual(" WHERE FirstName = 'Teste' AND Age = 17", result);
         }
 
         [TestMethod("Should validate GetWhereClause with empty object")]
         public void ShouldValidadeWhereEmpty()
         {
 
-            var pessoa = new Pessoa();
+            var person = new Person();
 
-            var gerador = new WhereClauseGenerator<Pessoa>(pessoa);
+            var generator = new WhereClauseGenerator<Person>(person);
 
-            var result = gerador.GetWhereClause();
+            var result = generator.GetWhereClause();
 
             Assert.AreEqual("", result);
         }
