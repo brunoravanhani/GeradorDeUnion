@@ -4,18 +4,18 @@ using System.Text;
 
 namespace GeradorUnion
 {
-    public class GeradorDeUnion<T>
+    public class UnionGenerator<T>
     {
         private readonly IList<T> _filters;
         private readonly StringBuilder _stringBuilder;
 
-        public GeradorDeUnion(IList<T> filters)
+        public UnionGenerator(IList<T> filters)
         {
             _filters = filters;
             _stringBuilder = new StringBuilder();
         }
 
-        public string Gerar()
+        public string Generate()
         {
             _stringBuilder.Clear();
             
@@ -28,7 +28,7 @@ namespace GeradorUnion
 
         private void PopulateStringBuilder(int i)
         {
-            var geradorDeWhere = new GeradorDeWhereClause<T>(_filters[i]);
+            var geradorDeWhere = new WhereClauseGenerator<T>(_filters[i]);
 
             _stringBuilder.Append("SELECT * FROM Table");
 

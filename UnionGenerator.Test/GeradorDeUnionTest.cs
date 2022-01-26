@@ -11,7 +11,7 @@ namespace GeradorUnion.Test
         [TestMethod]
         [DataRow(3, "select")]
         [DataRow(2, "union")]
-        [DataRow(3, "Tabela")]
+        [DataRow(3, "Table")]
         public void ShouldValidateGerador(int numberOcurrences, string word)
         {
             var pessoas = new List<Pessoa>
@@ -21,9 +21,9 @@ namespace GeradorUnion.Test
                 new Pessoa { Nome = "Teste1", Idade = 18 }
             };
 
-            var gerador = new GeradorDeUnion<Pessoa>(pessoas);
+            var gerador = new UnionGenerator<Pessoa>(pessoas);
 
-            var result = gerador.Gerar();
+            var result = gerador.Generate();
 
             var regex = new Regex(word, RegexOptions.IgnoreCase);
 

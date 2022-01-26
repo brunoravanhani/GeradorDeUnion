@@ -12,7 +12,7 @@ namespace GeradorUnion.Test
 
             var pessoa = new Pessoa { Nome = "Teste", Idade = 17, Sobrenome = "Da Silva" };
 
-            var gerador = new GeradorDeWhereClause<Pessoa>(pessoa);
+            var gerador = new WhereClauseGenerator<Pessoa>(pessoa);
 
             var result = gerador.GetWhereClause();
 
@@ -23,7 +23,7 @@ namespace GeradorUnion.Test
         public void ShouldValidadeWhereNull()
         {
 
-            var gerador = new GeradorDeWhereClause<Pessoa>(null);
+            var gerador = new WhereClauseGenerator<Pessoa>(null);
 
             var result = gerador.GetWhereClause();
 
@@ -36,7 +36,7 @@ namespace GeradorUnion.Test
 
             var pessoa = new Pessoa { Nome = "Teste", Idade = 17 };
 
-            var gerador = new GeradorDeWhereClause<Pessoa>(pessoa);
+            var gerador = new WhereClauseGenerator<Pessoa>(pessoa);
 
             var result = gerador.GetWhereClause();
 
@@ -49,7 +49,7 @@ namespace GeradorUnion.Test
 
             var pessoa = new Pessoa();
 
-            var gerador = new GeradorDeWhereClause<Pessoa>(pessoa);
+            var gerador = new WhereClauseGenerator<Pessoa>(pessoa);
 
             var result = gerador.GetWhereClause();
 

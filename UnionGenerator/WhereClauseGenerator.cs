@@ -5,11 +5,11 @@ using System.Text;
 
 namespace GeradorUnion
 {
-    public class GeradorDeWhereClause<T>
+    public class WhereClauseGenerator<T>
     {
         private readonly T _modelForWhere;
         private readonly StringBuilder _stringBuilder;
-        public GeradorDeWhereClause(T modelForWhere)
+        public WhereClauseGenerator(T modelForWhere)
         {
             _modelForWhere = modelForWhere;
             _stringBuilder = new StringBuilder();
